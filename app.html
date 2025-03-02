@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Interactive To-Do List</title>
+  <style>
+    body { font-family: Arial, sans-serif; }
+    #taskInput { padding: 10px; width: 200px; }
+    #addTaskBtn { padding: 10px; background-color: #28a745; color: white; border: none; cursor: pointer; }
+    #searchInput { padding: 10px; width: 200px; margin-top: 10px; }
+    #taskList { list-style-type: none; padding: 0; }
+    .taskItem { display: flex; justify-content: space-between; padding: 10px; border: 1px solid #ccc; margin: 5px 0; }
+    .deleteBtn { background-color: #dc3545; color: white; border: none; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <h1>Interactive To-Do List</h1>
+  <input type="text" id="taskInput" placeholder="Enter a task">
+  <button id="addTaskBtn">Add Task</button>
+  <input type="text" id="searchInput" placeholder="Search tasks">
+  <ul id="taskList"></ul>
+  <script src="app.js"></script> 
+</body>
+</html>
