@@ -1,71 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Interactive To-Do List</title>
-  <style>
-    body { font-family: Arial, sans-serif; }
-    #taskInput, #searchInput { 
-      padding: 10px; 
-      width: 200px; 
-      margin-bottom: 10px; 
-    }
-    #addTaskBtn { 
-      padding: 10px; 
-      background-color: #28a745; 
-      color: white; 
-      border: none; 
-      cursor: pointer; 
-    }
-    #taskList { 
-      list-style-type: none; 
-      padding: 0; 
-    }
-    .taskItem { 
-      display: flex; 
-      align-items: center; 
-      justify-content: space-between; 
-      padding: 10px; 
-      border: 1px solid #ccc; 
-      margin: 5px 0; 
-      background-color: #f9f9f9; 
-      border-radius: 5px; 
-    }
-    .taskContent { 
-      display: flex; 
-      align-items: center; 
-      flex-grow: 1; /* Ensures text takes available space */
-    }
-    .checkbox { 
-      margin-right: 10px; 
-    }
-    .buttonContainer {
-      display: flex;
-      gap: 5px; /* Space between buttons */
-    }
-    .editBtn, .deleteBtn { 
-      padding: 5px 10px; 
-      border: none; 
-      cursor: pointer; 
-      border-radius: 3px; 
-    }
-    .editBtn { 
-      background-color: #007bff; 
-      color: white; 
-    }
-    .deleteBtn { 
-      background-color: #dc3545; 
-      color: white; 
-    }
-  </style>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <h1>Interactive To-Do List</h1>
-  <input type="text" id="taskInput" placeholder="Enter a task">
+  <input type="text" id="taskInput" placeholder="Enter a task" />
   <button id="addTaskBtn">Add Task</button>
-  <input type="text" id="searchInput" placeholder="Search tasks">
+  <input type="text" id="searchInput" placeholder="Search tasks" />
   <ul id="taskList"></ul>
-  <script src="app.js"></script> 
+  
+  <script src="app.js"></script>
 </body>
 </html>
