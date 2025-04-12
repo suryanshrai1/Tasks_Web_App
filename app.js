@@ -1,5 +1,6 @@
 // DOM Elements
 const taskInput = document.getElementById('taskInput');
+const dueDateInput = document.getElementById('dueDateInput');
 const addTaskBtn = document.getElementById('addTaskBtn');
 const taskList = document.getElementById('taskList');
 const searchInput = document.getElementById('searchInput');
@@ -10,17 +11,21 @@ window.addEventListener('load', loadTasks);
 // Add Task Functionality
 addTaskBtn.addEventListener('click', () => {
   const taskText = taskInput.value.trim();
+  const dueDate = dueDateInput.value;
+
   if (taskText === '') {
     alert('Task cannot be empty!');
     return;
   }
-  addTaskToDOM(taskText);
+
+  addTaskToDOM(taskText, dueDate);
   saveTasks();
   taskInput.value = '';
+  dueDateInput.value = '';
 });
 
 // Add Task to DOM
-function addTaskToDOM(taskText) {
+function addTaskToDOM(taskText, dueDate) {
   const taskItem = document.createElement('li');
   taskItem.className = 'taskItem';
 
@@ -34,6 +39,10 @@ function addTaskToDOM(taskText) {
 
   const taskTextSpan = document.createElement('span');
   taskTextSpan.textContent = taskText;
+
+  const dueDateSpan = document.createElement('span');
+  dueDateSpan.className = 'dueDate';
+  dueDateSpan.textContent = dueDate ? `Due: ${new Date(dueDate).toLocaleDateString()}` : '';
 
   // Buttons container
   const buttonContainer = document.createElement('div');
@@ -50,6 +59,7 @@ function addTaskToDOM(taskText) {
   // Append elements
   taskContent.appendChild(checkbox);
   taskContent.appendChild(taskTextSpan);
+  taskContent.appendChild(dueDateSpan);
   buttonContainer.appendChild(editBtn);
   buttonContainer.appendChild(deleteBtn);
   
@@ -68,25 +78,35 @@ function addTaskToDOM(taskText) {
     const inputField = document.createElement('input');
     inputField.type = 'text';
     inputField.value = taskTextSpan.textContent;
+    const dateInputField = document.createElement('input');
+    dateInputField.type = 'date';
+    dateInputField.value = dueDate ? dueDate : '';
     taskItem.replaceChild(inputField, taskContent);
+    taskItem.replaceChild(dateInputField, buttonContainer);
     inputField.focus();
 
     inputField.addEventListener('blur', () => {
       const updatedText = inputField.value.trim();
+      const updatedDate = dateInputField.value;
       if (updatedText !== '') {
         taskTextSpan.textContent = updatedText;
+        dueDateSpan.textContent = updatedDate ? `Due: ${new Date(updatedDate).toLocaleDateString()}` : '';
       }
       taskItem.replaceChild(taskContent, inputField);
+      taskItem.replaceChild(buttonContainer, dateInputField);
       saveTasks();
     });
 
     inputField.addEventListener('keyup', (e) => {
       if (e.key === 'Enter') {
         const updatedText = inputField.value.trim();
+        const updatedDate = dateInputField.value;
         if (updatedText !== '') {
           taskTextSpan.textContent = updatedText;
+          dueDateSpan.textContent = updatedDate ? `Due: ${new Date(updatedDate).toLocaleDateString()}` : '';
         }
         taskItem.replaceChild(taskContent, inputField);
+        taskItem.replaceChild(buttonContainer, dateInputField);
         saveTasks();
       }
     });
@@ -116,7 +136,8 @@ function saveTasks() {
   document.querySelectorAll('.taskItem').forEach(taskItem => {
     const taskText = taskItem.querySelector('.taskContent span').textContent;
     const completed = taskItem.querySelector('.checkbox').checked;
-    tasks.push({ text: taskText, completed });
+    const dueDate = taskItem.querySelector('.dueDate').textContent.replace('Due: ', '');
+    tasks.push({ text: taskText, completed, dueDate: dueDate ? new Date(dueDate).toISOString().split('T')[0] : null });
   });
   localStorage.setItem('tasks', JSON.stringify(tasks));
 }
@@ -125,7 +146,7 @@ function saveTasks() {
 function loadTasks() {
   const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
   tasks.forEach(task => {
-    addTaskToDOM(task.text);
+    addTaskToDOM(task.text, task.dueDate);
     const taskItem = taskList.firstChild;
     if (task.completed) {
       taskItem.querySelector('.checkbox').checked = true;
