@@ -25,7 +25,7 @@ addTaskBtn.addEventListener('click', () => {
 });
 
 // Add Task to DOM
-function addTaskToDOM(taskText, dueDate) {
+function addTaskToDOM(taskText, dueDate, completed = false) {
   const taskItem = document.createElement('li');
   taskItem.className = 'taskItem';
 
@@ -36,9 +36,13 @@ function addTaskToDOM(taskText, dueDate) {
   const checkbox = document.createElement('input');
   checkbox.type = 'checkbox';
   checkbox.className = 'checkbox';
+  checkbox.checked = completed;
 
   const taskTextSpan = document.createElement('span');
   taskTextSpan.textContent = taskText;
+  if (completed) {
+    taskTextSpan.style.textDecoration = 'line-through';
+  }
 
   const dueDateSpan = document.createElement('span');
   dueDateSpan.className = 'dueDate';
@@ -65,7 +69,7 @@ function addTaskToDOM(taskText, dueDate) {
   
   taskItem.appendChild(taskContent);
   taskItem.appendChild(buttonContainer);
-  taskList.prepend(taskItem);
+  taskList.prepend(taskItem); // Adds new task at the top
 
   // Checkbox Functionality
   checkbox.addEventListener('change', () => {
@@ -78,14 +82,16 @@ function addTaskToDOM(taskText, dueDate) {
     const inputField = document.createElement('input');
     inputField.type = 'text';
     inputField.value = taskTextSpan.textContent;
+
     const dateInputField = document.createElement('input');
     dateInputField.type = 'date';
     dateInputField.value = dueDate ? dueDate : '';
+
     taskItem.replaceChild(inputField, taskContent);
     taskItem.replaceChild(dateInputField, buttonContainer);
     inputField.focus();
 
-    inputField.addEventListener('blur', () => {
+    const saveEdit = () => {
       const updatedText = inputField.value.trim();
       const updatedDate = dateInputField.value;
       if (updatedText !== '') {
@@ -95,20 +101,11 @@ function addTaskToDOM(taskText, dueDate) {
       taskItem.replaceChild(taskContent, inputField);
       taskItem.replaceChild(buttonContainer, dateInputField);
       saveTasks();
-    });
+    };
 
+    inputField.addEventListener('blur', saveEdit);
     inputField.addEventListener('keyup', (e) => {
-      if (e.key === 'Enter') {
-        const updatedText = inputField.value.trim();
-        const updatedDate = dateInputField.value;
-        if (updatedText !== '') {
-          taskTextSpan.textContent = updatedText;
-          dueDateSpan.textContent = updatedDate ? `Due: ${new Date(updatedDate).toLocaleDateString()}` : '';
-        }
-        taskItem.replaceChild(taskContent, inputField);
-        taskItem.replaceChild(buttonContainer, dateInputField);
-        saveTasks();
-      }
+      if (e.key === 'Enter') saveEdit();
     });
   });
 
@@ -145,12 +142,8 @@ function saveTasks() {
 // Load tasks from localStorage
 function loadTasks() {
   const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
-  tasks.forEach(task => {
-    addTaskToDOM(task.text, task.dueDate);
-    const taskItem = taskList.firstChild;
-    if (task.completed) {
-      taskItem.querySelector('.checkbox').checked = true;
-      taskItem.querySelector('.taskContent span').style.textDecoration = 'line-through';
-    }
+  // Reverse to maintain newest task at top
+  tasks.reverse().forEach(task => {
+    addTaskToDOM(task.text, task.dueDate, task.completed);
   });
 }
