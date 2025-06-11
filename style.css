@@ -47,6 +47,7 @@ body {
 .buttonContainer {
   display: flex;
   gap: 5px;
+  flex-wrap: wrap;
 }
 
 .editBtn,
