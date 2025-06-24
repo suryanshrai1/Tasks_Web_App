@@ -5,7 +5,8 @@ A simple and interactive To-Do List web application built with HTML, CSS, and Ja
 ## Features:
 - Add tasks to the list
 - Mark tasks as completed
-- Edit and delete tasks
+- **Edit tasks inline with Save and Cancel options**
+- Delete tasks
 - Search for tasks in the list
 - Data is saved to `localStorage` for persistence
 
@@ -22,5 +23,4 @@ You can view the live demo of this app at [GitHub Pages Link](https://suryanshra
 - CSS
 - JavaScript
 
-## License:
-This project is licensed under the MIT License.
+Made with ❤️ by Suryansh Rai
