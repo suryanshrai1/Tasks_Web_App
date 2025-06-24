@@ -147,3 +147,4 @@ function loadTasks() {
     addTaskToDOM(task.text, task.dueDate, task.completed);
   });
 }
+
